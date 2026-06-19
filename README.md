@@ -1,13 +1,10 @@
-# NSP Final Workspace
+# National Scholarship Portal (NSP) - Final Workspace
 
-National Scholarship Portal is a MERN stack application for managing scholarship applications, institute verification, and government approval workflows.
+**National Scholarship Portal** is a MERN (MongoDB, Express, React, Node.js) stack application for managing scholarship applications, institute verification, and government approval workflows.
 
-This repository is organized as a **single workspace** with two main application folders:
-
-- `Backend_(server)` → Express + MongoDB API
-- `nsp-final_(FrontEnd)` → React + Vite frontend
-
-The root folder also contains the workspace `package.json`, `README.md`, and `.gitignore`, so the project can be opened and understood from one GitHub repo.
+This repository is organized as a **monorepo** with two main application folders:
+- **`Backend`** → Express + MongoDB REST API
+- **`Frontend`** → React + Vite web application
 
 ---
 
@@ -20,344 +17,456 @@ The platform supports the following users and workflows:
 - **State Officers** review institute registrations and scholarship applications.
 - **Ministry Officers** make final approval or rejection decisions.
 
-The application includes:
-
-- Role-based access control
-- Seed data for default officer accounts
-- Frontend routing with protected routes
-
----
-
-### Frontend
-
-- **React** for UI rendering
-- **Vite** for fast development and bundling
-- **Axios** for API communication
-- **Tailwind CSS** for styling
-- **Chart.js** and **react-chartjs-2** for dashboard visualizations
-
-### Backend
-
-- **Node.js** runtime
-- **Express.js** for REST APIs
-- **MongoDB** as the database
-- **Mongoose** for schema modeling and validation
-- **JWT** for authentication
-- **bcryptjs** for password hashing
-- **Zod** for request validation
-- **cookie-parser** for auth cookie handling
-- **cors** for cross-origin requests
-- **helmet** for HTTP security headers
-- **express-rate-limit** for brute-force protection
-- **nodemailer** for OTP email delivery
+The application includes role-based access control, seed data for default officer accounts, and protected frontend routes.
 
 ---
 
 ## Repository Structure
 
-```text
-NSP_FINAL_MAIN/
-├── Backend_(server)/              # Express + MongoDB backend
-│   ├── scripts/                   # Seed and utility scripts
-│   ├── src/                       # Backend source code
-│   │   ├── controllers/           # Business logic for each route
-│   │   ├── middleware/            # Auth and request guards
-│   │   ├── models/                # Mongoose schemas and models
-│   │   ├── routes/                # Express route definitions
-│   │   └── utils/                 # DB, env, cookie, email helpers
-│   ├── .env                       # Local backend secrets
-│   ├── .env.example               # Backend environment template
-│   └── package.json               # Backend scripts and dependencies
-├── nsp-final_(FrontEnd)/          # React + Vite frontend
-│   ├── src/                       # Frontend source code
-│   │   ├── components/            # Reusable UI and layout components
-│   │   ├── context/               # Global auth/state context
-│   │   ├── hooks/                 # Custom hooks
-│   │   ├── pages/                 # Route-level screens
-│   │   ├── routes/                # Route config and guards
-│   │   ├── services/              # Axios/API layer
-│   │   └── utils/                 # Frontend helper functions
-│   ├── .env.example               # Frontend environment template
-│   ├── package.json               # Frontend scripts and dependencies
-│   └── vite.config.js             # Vite configuration
-├── .gitignore                     # Prevents secrets and build files from being committed
-├── package.json                   # Root workspace scripts (concurrently)
-└── README.md                      # Project documentation
+```
+Schlorship_Portal_Final_Eval/
+├── Backend/                           # Express + MongoDB REST API
+│   ├── scripts/
+│   │   └── seed-officers.js          # Seed default officer accounts
+│   ├── src/
+│   │   ├── controllers/               # Business logic & request handlers
+│   │   │   ├── instituteController.js
+│   │   │   ├── officerController.js
+│   │   │   ├── scholarshipController.js
+│   │   │   └── studentController.js
+│   │   ├── middleware/                # Auth, validation, error handling
+│   │   │   └── auth.js
+│   │   ├── models/                    # Mongoose schemas
+│   │   │   ├── Institute.js
+│   │   │   ├── Officer.js
+│   │   │   ├── PasswordReset.js
+│   │   │   ├── ScholarshipApplication.js
+│   │   │   └── Student.js
+│   │   ├── routes/                    # Express route definitions
+│   │   │   ├── auth.js
+│   │   │   ├── institute.js
+│   │   │   ├── me.js
+│   │   │   ├── officer.js
+│   │   │   ├── scholarship.js
+│   │   │   └── student.js
+│   │   ├── utils/                     # Helper utilities
+│   │   │   ├── cookies.js             # Cookie handling
+│   │   │   ├── db.js                  # Database connection
+│   │   │   ├── email.js               # OTP & email sending
+│   │   │   └── env.js                 # Environment variables
+│   │   └── index.js                   # Express server entry point
+│   ├── .env                          # Backend environment (git-ignored)
+│   ├── .env.example                  # Environment template
+│   ├── package.json                  # Backend dependencies & scripts
+│   └── package-lock.json
+│
+├── Frontend/                          # React + Vite web application
+│   ├── src/
+│   │   ├── components/                # Reusable UI components
+│   │   │   ├── Footer.jsx
+│   │   │   ├── LogoBar.jsx
+│   │   │   └── Navbar.jsx
+│   │   ├── pages/                     # Page-level components (routes)
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── StudentRegister.jsx
+│   │   │   ├── StudentDashboard.jsx
+│   │   │   ├── MyProfile.jsx
+│   │   │   ├── ScholarshipForm.jsx
+│   │   │   ├── CheckStatus.jsx
+│   │   │   ├── ApplicationSuccess.jsx
+│   │   │   ├── Institute.jsx
+│   │   │   ├── InstituteRegister.jsx
+│   │   │   ├── InstituteProfile.jsx
+│   │   │   ├── InstituteDashboard.jsx
+│   │   │   ├── InstituteApplications.jsx
+│   │   │   ├── OfficerInstituteApprovals.jsx
+│   │   │   ├── StateDashboard.jsx
+│   │   │   ├── MinistryDashboard.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   ├── AboutUs.jsx
+│   │   │   ├── ContactUs.jsx
+│   │   │   └── scholarships/
+│   │   │       ├── CentralScholarship.jsx
+│   │   │       ├── NationalMeritScholarship.jsx
+│   │   │       ├── NTSEScholarship.jsx
+│   │   │       ├── PostMatricScholarship.jsx
+│   │   │       └── PragatiScholarship.jsx
+│   │   ├── assets/                    # Images, icons, static files
+│   │   ├── App.jsx                    # Root React component
+│   │   ├── main.jsx                   # React DOM entry point
+│   │   └── index.css                  # Global styles
+│   ├── .vscode/                      # VS Code settings
+│   ├── index.html                    # HTML template
+│   ├── logo.svg                      # Application logo
+│   ├── vite.config.js                # Vite bundler configuration
+│   ├── tailwind.config.js            # Tailwind CSS configuration
+│   ├── postcss.config.js             # PostCSS configuration
+│   ├── proxy.config.js               # API proxy configuration
+│   ├── package.json                  # Frontend dependencies & scripts
+│   └── package-lock.json
+│
+├── .gitignore                         # Git ignore patterns
+├── package.json                       # Root workspace config
+├── package-lock.json
+└── README.md                          # Project documentation
 ```
 
-### Folder Usage
+---
 
-#### `Backend_(server)`
+## Architecture Overview
 
-- Holds the API server, database models, route handlers, validation, and seed scripts.
-- Use this folder when you want to update authentication, MongoDB logic, institute/student/officer workflows, or backend validation.
+### Backend Architecture (MVC Pattern)
 
-#### `nsp-final_(FrontEnd)`
+**`src/index.js`** - Server entry point
+- Initializes Express app
+- Configures middleware (cors, helmet, rate limiting, cookie-parser)
+- Mounts API routers
+- Starts HTTP server on specified port
 
-- Holds the React UI, route pages, dashboard screens, context, reusable components, and API calls.
-- Use this folder when you want to update forms, dashboards, page navigation, or frontend styling.
+**`src/models/`** - Mongoose schemas
+- `Student.js` - Student account data, credentials, profile information
+- `Institute.js` - Institute details, verification status, documents
+- `Officer.js` - Officer credentials and role assignment
+- `ScholarshipApplication.js` - Scholarship application data and approval workflow
+- `PasswordReset.js` - Temporary OTP tokens for password recovery
 
-#### Root folder
+**`src/routes/`** - Express route definitions
+- `auth.js` - Public registration/login endpoints
+- `me.js` - Protected profile endpoints
+- `student.js` - Student-specific operations
+- `institute.js` - Institute-specific operations  
+- `officer.js` - Officer-specific operations
+- `scholarship.js` - Scholarship application operations
 
-- Holds the workspace-level `package.json` for `concurrently`, the main `README.md`, and `.gitignore`.
-- Use the root when you want to install once, run both apps together, or document the whole project.
+**`src/controllers/`** - Business logic
+- `studentController.js` - Student registration, login, OTP, password reset
+- `instituteController.js` - Institute registration, verification, lookup
+- `officerController.js` - Officer login, institution approvals
+- `scholarshipController.js` - Application submission, approval tracking
 
-#### `scripts/`
+**`src/middleware/`** - Request processing
+- `auth.js` - JWT verification and role-based access control
 
-- Used for automation tasks like seeding officer accounts into MongoDB.
-- Run these scripts when you need initial demo data or testing credentials.
+**`src/utils/`** - Helper utilities
+- `db.js` - MongoDB connection initialization
+- `env.js` - Environment variable management and validation
+- `cookies.js` - HTTP-only JWT cookie creation and clearing
+- `email.js` - Nodemailer configuration for OTP delivery
 
-#### `.env` and `.env.example`
+**`scripts/`** - Automation
+- `seed-officers.js` - Seeds default officer accounts for testing
 
-- `.env` stores private local secrets and should never be pushed.
-- `.env.example` shows required keys so other developers can configure their local setup safely.
+### Frontend Architecture (React + Router)
 
-## Backend Architecture
+**`App.jsx`** - Root component
+- Defines all routes
+- Implements protected routes based on user role
 
-- configures middleware (`cors`, `helmet`, `cookie-parser`, rate limiter)
-- mounts API routers
-- starts the HTTP server
+**`pages/`** - Full-page components (one per route)
+- **Authentication**: `Login.jsx`, `StudentRegister.jsx`, `InstituteRegister.jsx`, `ForgotPassword.jsx`
+- **Student**: `StudentDashboard.jsx`, `MyProfile.jsx`, `ScholarshipForm.jsx`, `CheckStatus.jsx`, `ApplicationSuccess.jsx`
+- **Institute**: `Institute.jsx`, `InstituteRegister.jsx`, `InstituteProfile.jsx`, `InstituteDashboard.jsx`, `InstituteApplications.jsx`
+- **Officer**: `OfficerInstituteApprovals.jsx`, `StateDashboard.jsx`, `MinistryDashboard.jsx`
+- **General**: `Home.jsx`, `AboutUs.jsx`, `ContactUs.jsx`
+- **Scholarships**: `scholarships/` directory with specific scholarship details pages
 
-### `src/routes`
-
-Routes define URL endpoints and connect them to controller functions.
-
-- `auth.js` handles register, login, logout, forgot password, officer actions, and scholarship flows
-- `me.js` handles profile fetch and student profile updates
-
-### `src/controllers`
-
-Controllers contain the business logic.
-
-- `studentController.js` handles student registration, login, logout, OTP reset, and password reset
-- `instituteController.js` handles institute registration, login, and institute lookup by code
-- `officerController.js` handles officer login and institute approval workflows
-- `scholarshipController.js` handles scholarship application submission and approval stages
-
-### `src/models`
-
-Mongoose models define the database structure.
-
-- `Student.js`
-- `Institute.js`
-- `Officer.js`
-- `PasswordReset.js`
-
-### `src/middleware`
-
-- `auth.js` verifies JWT cookies and protects student, institute, and officer routes
-
-### `src/utils`
-
-- `db.js` handles MongoDB connection
-- `env.js` reads and validates environment variables
-- `cookies.js` sets and clears auth cookies
-
-- `seed-officers.js` creates default officer accounts for testing and demo use
+**`components/`** - Reusable UI components
+- `Navbar.jsx` - Top navigation bar
+- `Footer.jsx` - Footer component
+- `LogoBar.jsx` - Logo and branding header
 
 ---
 
-## Frontend Architecture
+## Technology Stack
 
-### `src/pages`
-
-Each page represents a full screen or route.
-
-- Home, About, Contact
-- Student registration, login, dashboard, profile, and application forms
-- Institute registration, dashboard, and profile pages
-- State and ministry dashboards
-- Forgot password and scholarship status pages
-
-### `src/routes`
-
-- `AppRoutes.jsx` centralizes route definitions
-- `ProtectedRoute.jsx` guards authenticated pages
-
-### `src/context`
-
-- `AuthContext.jsx` stores global auth state on the client
-
-### `src/services`
-
-- `api.js` centralizes backend API access through Axios
-
-### `src/components`
-
-- `common/` contains reusable UI controls such as buttons, inputs, loaders, and modals
-- `layout/` contains layout components such as navbar, footer, and sidebar
+| Component | Technology | Version | Purpose |
+|-----------|-----------|---------|---------|
+| **Frontend Framework** | React | 18.2.0 | UI components and state |
+| **Routing** | React Router DOM | 6.22.0 | Client-side page navigation |
+| **Build Tool** | Vite | 5.1.0 | Fast development server & bundler |
+| **Styling** | Tailwind CSS | 3.4.1 | Utility-first CSS framework |
+| **CSS Processing** | PostCSS | 8.4.35 | CSS transformation and autoprefixer |
+| **HTTP Client** | Axios | 1.7.9 | API requests |
+| **Data Visualization** | Chart.js + react-chartjs-2 | 4.5.1 + 5.3.1 | Dashboard charts |
+| **Backend Framework** | Express.js | 4.19.2 | REST API server |
+| **Database** | MongoDB | (Cloud) | NoSQL document store |
+| **ODM** | Mongoose | 8.5.2 | Schema validation & ORM |
+| **Authentication** | JWT (jsonwebtoken) | 9.0.2 | Stateless token authentication |
+| **Password Security** | bcryptjs | 2.4.3 | Secure password hashing |
+| **HTTP Security** | Helmet | 7.1.0 | Security headers middleware |
+| **Rate Limiting** | express-rate-limit | 7.4.0 | Brute-force protection |
+| **CORS** | cors | 2.8.5 | Cross-origin resource sharing |
+| **Email Service** | Nodemailer | 6.9.3 | OTP email delivery |
+| **Cookies** | cookie-parser | 1.4.6 | HTTP cookie handling |
+| **Input Validation** | Zod | 3.23.8 / 4.4.3 | Schema validation (backend/frontend) |
+| **Concurrency** | concurrently | 8.2.2 | Run multiple npm scripts simultaneously |
 
 ---
 
-## Environment Variables
+## Installation & Setup
 
-### Backend `.env`
+### Prerequisites
 
-Create `Backend_(server)/.env` using the template from `Backend_(server)/.env.example`.
+- **Node.js** 16.x or higher
+- **npm** 8.x or higher
+- **MongoDB** (Atlas Cloud or local instance)
+- **Git** for cloning
 
-Example keys:
+### Step 1: Clone Repository
+
+```bash
+git clone https://github.com/ParasJagdale/National_Schlorship_Portal_Final.git
+cd Schlorship_Portal_Final_Eval
+```
+
+### Step 2: Install Dependencies
+
+```bash
+# Install root workspace dependencies
+npm install
+
+# Install backend dependencies
+cd Backend
+npm install
+
+# Install frontend dependencies
+cd ../Frontend
+npm install
+
+# Return to root
+cd ..
+```
+
+### Step 3: Environment Configuration
+
+**Backend** - Create `Backend/.env` file:
 
 ```env
+# Server Configuration
 PORT=5174
 NODE_ENV=development
-MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<db>
-JWT_SECRET=your-secret-key
+
+# Database
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>
+
+# JWT & Security
+JWT_SECRET=your-secret-key-here
+
+# CORS
 FRONTEND_ORIGIN=http://localhost:5173
+
+# Email (Nodemailer) - Gmail Example
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=your-email@example.com
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-EMAIL_FROM=your-email@example.com
+EMAIL_FROM=noreply@scholarship.portal
 ```
 
-### Frontend `.env`
+> **Note**: For Gmail, use an [App Password](https://support.google.com/accounts/answer/185833), not your regular password.
 
-Create `nsp-final_(FrontEnd)/.env` using `nsp-final_(FrontEnd)/.env.example`.
-
-Example:
+**Frontend** - Create `Frontend/.env.local` file:
 
 ```env
 VITE_API_URL=http://localhost:5174/api
 ```
 
-> Do not commit real `.env` files. Keep secrets local only.
-
 ---
 
-## Installation
+## Running the Application
 
-Install dependencies for all three package scopes:
+### Option 1: Run Both Apps from Root (Recommended)
 
-```powershell
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main\Backend_(server)"
-npm install
-
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main\nsp-final_(FrontEnd)"
-npm install
-
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main"
-npm install
-```
-
----
-
-## Running the Project
-
-### Option 1: Run both apps from the root folder
-
-This uses **concurrently** to start frontend and backend together.
-
-```powershell
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main"
+```bash
 npm run dev
 ```
 
-- `npm run client` → starts the frontend
-- `npm run server` → starts the backend
-- `npm run dev` → starts both together
-- `npm run seed` → runs the seed script in `Backend_(server)`
+This starts both backend and frontend simultaneously using **concurrently**.
 
-### Default seeded officer accounts
+Available root commands:
+- `npm run dev` - Start both backend and frontend
+- `npm run server` - Start only backend  
+- `npm run client` - Start only frontend
+- `npm run seed` - Seed default officer accounts
 
-The backend seed script creates these demo accounts if they do not already exist:
+### Option 2: Run Apps Separately
 
-- **State Officer**: `stateoffice@gmail.com` / `admin123`
-- **Ministry Officer**: `centraloffice@gmail.com` / `admin123`
-
-### Option 2: Run apps separately
-
-Backend:
-
-```powershell
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main\Backend_(server)"
+**Terminal 1 - Backend:**
+```bash
+cd Backend
 npm run dev
 ```
+Backend runs on: `http://localhost:5174`
 
-Frontend:
-
-```powershell
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main\nsp-final_(FrontEnd)"
+**Terminal 2 - Frontend:**
+```bash
+cd Frontend
 npm run dev
 ```
-
-### MongoDB Compass Setup
-
-If you want to inspect the database in MongoDB Compass:
-
-1. Open **MongoDB Compass**
-2. Paste the `MONGODB_URI` from `Backend_(server)/.env`
-3. Click **Connect**
-4. Open the `nsp` database from the left panel
-
-If your URI includes the database name, Compass will connect directly to that database instead of defaulting to `test`.
+Frontend runs on: `http://localhost:5173`
 
 ---
 
-## Seeding Default Officers
+## Seeding Default Data
 
-The backend includes a seed script that creates default officer accounts if they do not already exist.
+Run this command to create demo officer accounts:
 
-Run it from the root:
-
-```powershell
-cd "c:\Users\2488261\OneDrive - Cognizant\Desktop\NSP_Final_Main"
+```bash
 npm run seed
 ```
 
-Default credentials used in the project:
-
+**Default Seeded Credentials:**
 - **State Officer**: `stateoffice@gmail.com` / `admin123`
 - **Ministry Officer**: `centraloffice@gmail.com` / `admin123`
+
+---
+
+## Data Flow: Student Registration Example
+
+### Frontend Flow
+1. **User fills form** in `StudentRegister.jsx` with email, password, name, etc.
+2. **Form validation** using Zod schema
+3. **Axios POST request** to `/api/auth/register`
+
+### Backend Flow
+1. **Route handler** (`auth.js`) receives request
+2. **Controller** (`studentController.js`) validates data with Zod
+3. **Check if email exists** in database
+4. **Hash password** with bcryptjs
+5. **Create Student** document in MongoDB
+6. **Send OTP email** via Nodemailer (`utils/email.js`)
+7. **Return success response** with user data
+
+### Response Flow
+1. **Frontend receives** response and redirects to OTP verification
+2. **User enters OTP** received via email
+3. **Backend verifies OTP** against stored token
+4. **Account activated** in database
+5. **JWT token generated** and sent as HTTP-only cookie
+6. **User redirected** to dashboard
+
+---
+
+## User Roles & Workflows
+
+### Student Workflow
+1. Register with email/password
+2. Verify OTP sent to email
+3. Log in to dashboard
+4. Update profile information
+5. Browse available scholarships
+6. Apply for scholarships
+7. Track application status
+
+### Institute Workflow
+1. Register with institute code and proof documents
+2. Wait for state officer review
+3. After approval, log in to dashboard
+4. View student scholarship applications
+5. Verify and approve applications
+
+### State Officer Workflow
+1. Log in with officer credentials
+2. Review pending institute registrations
+3. Approve/reject institutes
+4. Review scholarship applications (first stage)
+5. Forward to ministry officer
+
+### Ministry Officer Workflow
+1. Log in to ministry dashboard
+2. Review forwarded applications from state officers
+3. Make final approval/rejection decisions
+
+---
+
+## API Endpoints Summary
+
+### Authentication
+- `POST /api/auth/register` - Student/Institute registration
+- `POST /api/auth/login` - Login
+- `POST /api/auth/logout` - Logout
+- `POST /api/auth/forgot-password` - Initiate password reset
+
+### User Profile
+- `GET /api/me` - Get current user profile
+- `PUT /api/me` - Update user profile
+
+### Student Operations
+- `GET /api/student` - Get student applications
+- `POST /api/scholarship/apply` - Submit scholarship application
+- `GET /api/scholarship/status` - Check application status
+
+### Institute Operations
+- `GET /api/institute` - Get institute details
+- `GET /api/institute/applications` - Get applications for verification
+
+### Officer Operations
+- `GET /api/officer/approvals` - Get pending approvals
+- `POST /api/officer/approve` - Approve/reject items
+
+---
+
+## Troubleshooting
+
+### OTP Not Sending (ETIMEDOUT Error)
+**Cause**: SMTP connection timeout, usually due to company firewall blocking ports 465/587.
+
+**Solution**:
+1. Check if port 465 or 587 is open on your network
+2. Use Mailtrap or Ethereal for testing if SMTP is blocked
+3. Configure SMTP settings correctly (port, secure flag)
+
+### MongoDB Connection Error
+**Cause**: Invalid connection string or credentials.
+
+**Solution**:
+1. Verify `MONGODB_URI` in `Backend/.env`
+2. Check MongoDB Atlas IP whitelist includes your IP
+3. Ensure username/password are URL-encoded
+
+### Frontend Not Connecting to Backend
+**Cause**: CORS issue or wrong API URL.
+
+**Solution**:
+1. Verify `VITE_API_URL` in `Frontend/.env.local`
+2. Check CORS configuration in backend `index.js`
+3. Ensure backend is running on correct port
 
 ---
 
 ## Security Notes
 
-- Passwords are stored only as hashes using `bcryptjs`
-- JWTs are stored in HTTP-only cookies
-- `.env` files are ignored through `.gitignore`
-- Validation is handled using `zod` before data reaches the database
-- Rate limiting helps protect login and API endpoints
-
----
-
-## Key User Flows
-
-### Student Flow
-
-1. Student registers
-2. Student logs in
-3. Student updates profile
-4. Student checks institute details
-5. Student applies for a scholarship
-6. Student tracks application status
-
-### Institute Flow
-
-1. Institute registers with proof documents
-2. State officer reviews the institute
-3. Ministry officer approves or rejects the institute
-4. Approved institutes can verify scholarship applications
-
-### Officer Flow
-
-1. Officer logs in
-2. Officer views institute approvals
-3. Officer forwards or finalizes institute decisions
-4. Officer reviews scholarship applications at the appropriate stage
+- ✅ Passwords stored only as bcrypt hashes
+- ✅ JWTs stored in HTTP-only cookies (not localStorage)
+- ✅ `.env` files ignored via `.gitignore`
+- ✅ Input validation via Zod schemas
+- ✅ Rate limiting on login/register endpoints
+- ✅ Helmet middleware adds security headers
+- ✅ CORS configured to allow only frontend origin
 
 ---
 
 ## Interview Summary
 
-If you need to explain this project in an interview, you can say:
+> "This is a full-stack MERN application for managing national scholarship programs. The backend uses Express with MongoDB for robust API design, JWT authentication for security, and Nodemailer for OTP delivery. The frontend is built with React and Vite for a responsive multi-role dashboard experience. I implemented role-based access control with protected routes, used Zod for input validation on both client and server, and configured a monorepo workspace with concurrently for seamless development. The application supports students, institutes, and officers in a complete scholarship workflow."
 
-> “This is a MERN-based National Scholarship Portal that separates frontend and backend cleanly. The backend uses Express, MongoDB, Mongoose, JWT, and Zod for secure and structured API handling, while the frontend uses React, Vite, and React Router for a responsive multi-role dashboard experience. I also configured a root workspace package with concurrently so both apps can be started together using a single command.”
+---
+
+## Project Resources
+
+- **Repository**: https://github.com/ParasJagdale/National_Schlorship_Portal_Final
+- **Owner**: ParasJagdale
+- **License**: Check LICENSE file
+- **Last Updated**: June 2026
 
 ---
 
 ## Notes
 
-- Keep the repository clean by committing only source files, `README.md`, `.gitignore`, and `.env.example` templates.
-- Never commit real secrets from `.env`.
-- If you update environment keys or ports, also update the examples and the README.
+- Always keep `.env` files local and never commit them to GitHub
+- Use `.env.example` as a template for other developers
+- Run `npm run seed` after fresh database setup
+- Test email functionality with correct SMTP credentials
+- Check MongoDB Atlas security rules for connection issues

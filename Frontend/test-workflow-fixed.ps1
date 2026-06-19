@@ -7,7 +7,7 @@ Get-Process node -ErrorAction SilentlyContinue | ForEach-Object {
 
 Start-Sleep 2
 
-$backendPath = Join-Path $PSScriptRoot 'server'
+$backendPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'Backend'
 
 Write-Host "Starting backend server..."
 Push-Location $backendPath
@@ -25,7 +25,7 @@ Write-Host "Backend started successfully.`n"
 
 Write-Host "Registering a test institute via API..."
 $instReg = Invoke-RestMethod -Method Post `
-  -Uri 'http://localhost:5174/api/auth/register/institute' `
+  -Uri 'http://localhost:5000/api/auth/register/institute' `
   -ContentType 'application/json' `
   -Body (@{ name='API Test University'; password='password123' } | ConvertTo-Json)
 
@@ -34,7 +34,7 @@ Write-Host "Test institute registered successfully with ID: $targetInstId`n"
 
 Write-Host "Logging in as State Officer..."
 $stateLogin = Invoke-RestMethod -Method Post `
-  -Uri 'http://localhost:5174/api/auth/officer/login' `
+  -Uri 'http://localhost:5000/api/auth/officer/login' `
   -ContentType 'application/json' `
   -Body (@{ email='stateoffice@gmail.com'; password='admin123'} | ConvertTo-Json) `
   -SessionVariable stateSess
@@ -42,7 +42,7 @@ Write-Host "State Officer logged in successfully."
 
 Write-Host "Finding institute $targetInstId in pending applications..."
 
-$apps = Invoke-RestMethod -Uri 'http://localhost:5174/api/auth/officer/institute-applications' -WebSession $stateSess
+$apps = Invoke-RestMethod -Uri 'http://localhost:5000/api/auth/officer/institute-applications' -WebSession $stateSess
 $target = $apps.apps | Where-Object { $_.instId -eq $targetInstId }
 
 $targetId = $target._id
@@ -55,7 +55,7 @@ Write-Host "Found application with MongoDB ID: $targetId"
 
 Write-Host "Forwarding institute $targetInstId to Ministry..."
 Invoke-RestMethod -Method Post `
-  -Uri ('http://localhost:5174/api/auth/officer/institute/' + $targetId + '/forward') `
+  -Uri ('http://localhost:5000/api/auth/officer/institute/' + $targetId + '/forward') `
   -WebSession $stateSess `
   -Body '{}' `
   -ContentType 'application/json'
@@ -63,7 +63,7 @@ Write-Host "Institute forwarded successfully.`n"
 
 Write-Host "Logging in as Ministry Officer..."
 $ministryLogin = Invoke-RestMethod -Method Post `
-  -Uri 'http://localhost:5174/api/auth/officer/login' `
+  -Uri 'http://localhost:5000/api/auth/officer/login' `
   -ContentType 'application/json' `
   -Body (@{ email='centraloffice@gmail.com'; password='admin123'} | ConvertTo-Json) `
   -SessionVariable ministrySess
@@ -71,7 +71,7 @@ Write-Host "Ministry Officer logged in successfully."
 
 Write-Host "Approving institute $targetInstId..."
 Invoke-RestMethod -Method Post `
-  -Uri ('http://localhost:5174/api/auth/officer/institute/' + $targetId + '/decision') `
+  -Uri ('http://localhost:5000/api/auth/officer/institute/' + $targetId + '/decision') `
   -WebSession $ministrySess `
   -Body (@{ decision='approve'} | ConvertTo-Json) `
   -ContentType 'application/json'
