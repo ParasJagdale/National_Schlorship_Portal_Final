@@ -157,7 +157,7 @@ export default function Home() {
             <p className="text-xs text-gray-600 mb-2">
               For technical issues or queries:
             </p>
-            <p className="text-xs font-semibold">📞 Toll Free: 1800-XXX-XXXX</p>
+            <p className="text-xs font-semibold">📞 Toll Free: 1800-340-3400</p>
             <p className="text-xs font-semibold">✉ helpdesk@nsp.gov.in</p>
             <p className="text-xs text-gray-500 mt-2">
               Mon–Fri: 9:00 AM – 6:00 PM

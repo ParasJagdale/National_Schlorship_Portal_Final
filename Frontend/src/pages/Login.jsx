@@ -26,7 +26,7 @@ export default function Login() {
               : null
 
       if (!endpoint) {
-        return navigate(routes.ministry)
+        return alert("Please select a role");
       }
       // Prepare the payload based on the user type
       const payload =

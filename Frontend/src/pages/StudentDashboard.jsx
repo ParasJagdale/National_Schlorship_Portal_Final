@@ -391,7 +391,6 @@ export default function StudentDashboard() {
           </aside>
         </div>
       </main>
-
       <Footer />
     </div>
   );
