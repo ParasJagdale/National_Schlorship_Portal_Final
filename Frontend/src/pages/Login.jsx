@@ -26,9 +26,9 @@ export default function Login() {
               : null
 
       if (!endpoint) {
-        return alert("Please select a role");
+        return navigate(routes.ministry)
       }
-      // Prepare the payload based on the user type
+
       const payload =
         form.type === 'student' || form.type === 'institute'
           ? { uid: form.uid, password: form.password }
@@ -45,7 +45,7 @@ export default function Login() {
       if (!res.ok) {
         return alert(data?.error ?? 'Login failed')
       }
-      // Navigate to the appropriate dashboard based on the user type
+
       navigate(routes[form.type])
     } catch {
       alert('Login failed (network error)')

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const AddressSchema = new mongoose.Schema({
   addr1: { type: String },
@@ -7,7 +7,7 @@ const AddressSchema = new mongoose.Schema({
   addrState: { type: String },
   addrDistrict: { type: String },
   pincode: { type: String },
-});
+})
 
 const InstituteSchema = new mongoose.Schema(
   {
@@ -28,10 +28,9 @@ const InstituteSchema = new mongoose.Schema(
     principal: { type: String },
     mobile: { type: String },
     telephone: { type: String },
-    status: { type: String, default: "Pending", index: true },
+    status: { type: String, default: 'Pending', index: true },
   },
-  { timestamps: true },
-);
+  { timestamps: true }
+)
 
-export const Institute =
-  mongoose.models.Institute || mongoose.model("Institute", InstituteSchema);
+export const Institute = mongoose.models.Institute || mongoose.model('Institute', InstituteSchema)
